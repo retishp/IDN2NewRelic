@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+    name: sailpoint-cron-job
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 5
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: <name>
+            image: <location>/idn2newrelic:latest
+            env:
+            - name: AZURE_APPCONFIG_CONNECTION_STRING
+              value: <Endpoint=.....>
+            imagePullPolicy: Never
+            args: ["python", "/app/IDN2NewRelic.py"]
